@@ -22,7 +22,7 @@
 // Execute `rustlings hint tests5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 /// # Safety
 ///
@@ -30,9 +30,9 @@
 unsafe fn modify_by_address(address: usize) {
     // TODO: Fill your safety notice of the code block below to match your
     // code's behavior and the contract of this function. You may use the
-    // comment of the test below as your format reference.
+    // comment of the test below as your format reference.    
     unsafe {
-        todo!("Your code goes here")
+        *(address as *mut u32) = 0xAABBCCDD;  //在函数中分配一块内存，内存的地址是：address，内存的类型是：u32 ，是可变的，将地址中的值修改为0xAABBCCDD
     }
 }
 
@@ -42,10 +42,10 @@ mod tests {
 
     #[test]
     fn test_success() {
-        let mut t: u32 = 0x12345678;
+        let mut t: u32 = 0x12345678;  //t的初始值为0x12345678，这是一个可变的u32类型的变量，分配的内存地址为：0x10000000
         // SAFETY: The address is guaranteed to be valid and contains
         // a unique reference to a `u32` local variable.
-        unsafe { modify_by_address(&mut t as *mut u32 as usize) };
-        assert!(t == 0xAABBCCDD);
+        unsafe { modify_by_address(&mut t as *mut u32 as usize) }; //调用函数，将t传递给address之后，t的内存值被修改为0xAABBCCDD
+        assert!(t == 0xAABBCCDD);  //测试t的值是否为0xAABBCCDD，这个0xAABBCCDD是内存的分配吗？
     }
 }

@@ -18,7 +18,7 @@ struct Person {
 impl Default for Person {
     fn default() -> Person {
         Person {
-            name: String::from("John"),
+            name: String::from("John"), //name是string类型，所以需要使用String::from()来创建一个String类型的变量
             age: 30,
         }
     }
@@ -40,12 +40,35 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let split: Vec<&str> = s.split(",").collect();
+        if split.len() != 2{
+            return Person::default()
+        }
+        let name = String::from(split[0]);
+        if name.is_empty(){
+            return Person::default()
+        }        
+        match split[1].parse::<usize>(){
+            Ok(age) => Person {
+                name: name,
+                age: age,
+            },
+            Err(_) => Person::default(),
+        }   
     }
+    //from方法的参数是&str类型，返回值是Person类型，
 }
+//为Person类型实现From trait的两个方法，默认的是default方法，另一个是from方法，
+// 当传入的参数类型是&str时，调用from方法，返回值是Person类型。
+// 当传入的参数类型是String时，调用from方法，返回值是Person类型。
+// 当传入的参数类型是&String时，调用from方法，返回值是Person类型。
+// 当传入的错误的参数，例如：&u8类型时，调用default方法，返回值是Person类型。
+// 当传入的参数类型是u8类型时，调用default方法，返回值是Person类型。
+// ，调用默认的default方法，返回值是Person类型。
 
 fn main() {
     // Use the `from` function

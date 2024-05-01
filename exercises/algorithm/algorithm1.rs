@@ -13,6 +13,7 @@ struct Node<T> {
     val: T,
     next: Option<NonNull<Node<T>>>,
 }
+//定义一个链表，其中包含一个头节点，以及一个尾节点，尾结点类型为Option<NonNull<Node<T>>>，NonNull<Node<T>>是一个智能指针，指向一个Node<T>类型的节点.
 
 impl<T> Node<T> {
     fn new(t: T) -> Node<T> {
@@ -22,18 +23,27 @@ impl<T> Node<T> {
         }
     }
 }
+//impl Node<T>的new方法，该方法创建一个新的Node<T>类型的节点，并将val设置为t，t表示一个泛型参数，表示节点的值，next设置为None.
+
+
 #[derive(Debug)]
 struct LinkedList<T> {
     length: u32,
     start: Option<NonNull<Node<T>>>,
     end: Option<NonNull<Node<T>>>,
 }
+/*定义一个linked list，其中包含一个length字段，表示链表的长度，一个start字段，表示链表的起始节点，一个end字段，表示链表的结束节点。
+start和end字段都是Option<NonNull<Node<T>>>类型的，表示链表的起始节点和结束节点，NonNull<Node<T>>是一个智能指针，指向一个Node<T>类型的节点。 
+ */
 
 impl<T> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
+/*imp LinkedList<T>的default方法，该方法返回一个默认的LinkedList<T>实例，即一个空链表。
+那么空链表的length字段为0，start和end字段为None。
+ */
 
 impl<T> LinkedList<T> {
     pub fn new() -> Self {
@@ -43,6 +53,9 @@ impl<T> LinkedList<T> {
             end: None,
         }
     }
+    /*imp LinkedList<T>的new方法，该方法创建一个新的LinkedList<T>实例，并初始化其length字段为0，start和end字段为None。
+    new方法返回一个新的LinkedList<T>实例，与Default方法返回的默认实例相同。
+    */
 
     pub fn add(&mut self, obj: T) {
         let mut node = Box::new(Node::new(obj));
@@ -55,10 +68,21 @@ impl<T> LinkedList<T> {
         self.end = node_ptr;
         self.length += 1;
     }
+    /*imp LinkedList<T>的add方法，该方法将一个元素添加到链表的末尾。
+    首先，创建一个新的Node<T>类型的节点，并将obj设置为其val字段，并将next字段设置为None。
+    然后，将新创建的节点包装在一个Box中，并将其转换为NonNull<Node<T>>类型的智能指针。
+    接下来，根据链表是否为空，将新创建的节点设置为链表的起始节点或结束节点。
+    链表如果不为空，采用unsafe的方式，将链表的结束节点的next字段设置为新创建的节点。
+    用*end_ptr.as_ptr()获取end_ptr指向的节点的指针，然后将新创建的节点设置为该节点的next字段。
+    最后，将链表的长度加1。
+
+     */
 
     pub fn get(&mut self, index: i32) -> Option<&T> {
         self.get_ith_node(self.start, index)
     }
+    /*imp LinkedList<T>的get方法，该方法返回链表中指定索引位置的元素的引用。
+    */
 
     fn get_ith_node(&mut self, node: Option<NonNull<Node<T>>>, index: i32) -> Option<&T> {
         match node {
@@ -72,11 +96,18 @@ impl<T> LinkedList<T> {
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
 	{
 		//TODO
+        let mut list_c = LinkedList::<i32>::new();
+        let mut node_a = list_a.start;
+        let mut node_b = list_b.start;
+        while node_a.is_some() && node_b.is_some() {
+            let node_a_ptr = node_a.unwrap();
+        }
 		Self {
             length: 0,
             start: None,
             end: None,
         }
+
 	}
 }
 
