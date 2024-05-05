@@ -11,7 +11,7 @@ use std::vec::*;
 #[derive(Debug)]
 struct Node<T> {
     val: T,
-    next: Option<NonNull<Node<T>>>,
+    next: Option<NonNull<Node<T>>>,q
 }
 //定义一个链表，其中包含一个头节点，以及一个尾节点，尾结点类型为Option<NonNull<Node<T>>>，NonNull<Node<T>>是一个智能指针，指向一个Node<T>类型的节点.
 
@@ -32,7 +32,8 @@ struct LinkedList<T> {
     start: Option<NonNull<Node<T>>>,
     end: Option<NonNull<Node<T>>>,
 }
-/*定义一个linked list，其中包含一个length字段，表示链表的长度，一个start字段，表示链表的起始节点，一个end字段，表示链表的结束节点。
+/*定义一个linked list，作用是存储一系列的节点。
+ ，其中包含一个length字段，表示链表的长度，一个start字段，表示链表的起始节点，一个end字段，表示链表的结束节点。
 start和end字段都是Option<NonNull<Node<T>>>类型的，表示链表的起始节点和结束节点，NonNull<Node<T>>是一个智能指针，指向一个Node<T>类型的节点。 
  */
 
@@ -43,6 +44,7 @@ impl<T> Default for LinkedList<T> {
 }
 /*imp LinkedList<T>的default方法，该方法返回一个默认的LinkedList<T>实例，即一个空链表。
 那么空链表的length字段为0，start和end字段为None。
+Default单独impl，是因为它是一个关联函数，关联函数的作用是定义一个类型T的默认值。
  */
 
 impl<T> LinkedList<T> {
@@ -55,10 +57,12 @@ impl<T> LinkedList<T> {
     }
     /*imp LinkedList<T>的new方法，该方法创建一个新的LinkedList<T>实例，并初始化其length字段为0，start和end字段为None。
     new方法返回一个新的LinkedList<T>实例，与Default方法返回的默认实例相同。
+    default方法在外面定义，因为它是一个关联函数，关联函数的作用是定义一个类型T的默认值。
+    new方法的作用是创建一个新的LinkedList<T>实例，并初始化其length字段为0，start和end字段为None.
     */
 
     pub fn add(&mut self, obj: T) {
-        let mut node = Box::new(Node::new(obj));
+        let mut node = Box::new(Node::new(obj));  //创建一个新的Node<T>类型的节点，并将obj设置为其值字段，并将next字段设置为None.
         node.next = None;
         let node_ptr = Some(unsafe { NonNull::new_unchecked(Box::into_raw(node)) });
         match self.end {
@@ -70,18 +74,18 @@ impl<T> LinkedList<T> {
     }
     /*imp LinkedList<T>的add方法，该方法将一个元素添加到链表的末尾。
     首先，创建一个新的Node<T>类型的节点，并将obj设置为其val字段，并将next字段设置为None。
-    然后，将新创建的节点包装在一个Box中，并将其转换为NonNull<Node<T>>类型的智能指针。
-    接下来，根据链表是否为空，将新创建的节点设置为链表的起始节点或结束节点。
-    链表如果不为空，采用unsafe的方式，将链表的结束节点的next字段设置为新创建的节点。
-    用*end_ptr.as_ptr()获取end_ptr指向的节点的指针，然后将新创建的节点设置为该节点的next字段。
+    然后，创建node_ptr，是一个Option<NonNull<Node<T>>>类型的智能指针，指向一个Node<T>类型的节点。 将node包装在一个Box中，并将其转换为NonNull<Node<T>>类型的智能指针。
+    接下来，match判断链表是否为空，将新创建的节点设置为链表的起始节点或结束节点。
+    如果链表不为空，则采用unsafe的方式，将链表的结束节点的next字段设置为新创建的节点。
     最后，将链表的长度加1。
-
-     */
+    */
 
     pub fn get(&mut self, index: i32) -> Option<&T> {
         self.get_ith_node(self.start, index)
     }
-    /*imp LinkedList<T>的get方法，该方法返回链表中指定索引位置的元素的引用。
+    /*imp LinkedList<T>的get方法，接收一个索引值作为参数，返回链表中指定索引位置的元素的引用。
+    首先，调用get_ith_node方法，传入链表的起始节点和索引值。
+    返回值是Option<&T>类型的，表示可能存在也可能不存在的元素的引用。
     */
 
     fn get_ith_node(&mut self, node: Option<NonNull<Node<T>>>, index: i32) -> Option<&T> {
@@ -93,21 +97,22 @@ impl<T> LinkedList<T> {
             },
         }
     }
+    /*get_ith_node方法接收两个参数：一个链表的起始节点和一个索引值。
+    
+    首先，检查链表是否为空，如果为空，则返回None。
+    如果链表不为空，则检查索引值是否为0，如果是0，则返回链表的起始节点的val字段的引用。
+    否则，递归调用get_ith_node方法，传入链表的下一个节点和索引值减1。
+    */
+
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
 	{
 		//TODO
-        let mut list_c = LinkedList::<i32>::new();
-        let mut node_a = list_a.start;
-        let mut node_b = list_b.start;
-        while node_a.is_some() && node_b.is_some() {
-            let node_a_ptr = node_a.unwrap();
-        }
+ 
 		Self {
             length: 0,
             start: None,
             end: None,
         }
-
 	}
 }
 
