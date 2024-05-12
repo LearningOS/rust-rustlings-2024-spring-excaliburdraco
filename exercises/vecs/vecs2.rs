@@ -7,8 +7,6 @@
 //
 // Execute `rustlings hint vecs2` or use the `hint` watch subcommand for a hint.
 
-
-
 fn vec_loop(mut v: Vec<i32>) -> Vec<i32> {
     for element in v.iter_mut() {
         // TODO: Fill this up so that each element in the Vec `v` is
@@ -38,11 +36,13 @@ fn vec_loop(mut v: Vec<i32>) -> Vec<i32> {
 } */
 
 fn vec_map(v: &Vec<i32>) -> Vec<i32> {
-    v.iter().map(|element| {
-        // TODO: Do the same thing as above - but instead of mutating the
-        // Vec, you can just return the new number!
-        element*2
-    }).collect()
+    v.iter()
+        .map(|element| {
+            // TODO: Do the same thing as above - but instead of mutating the
+            // Vec, you can just return the new number!
+            element * 2
+        })
+        .collect()
 }
 /*在Rust中，iter() 方法会创建一个迭代器，它会借用集合中的每个元素。这意味着迭代器中的元素是对原始数据的引用。当你使用 map 方法时，
 它会遍历迭代器中的每个元素，这些元素已经是引用了。因此，在 map 闭包中，element 是 &i32 类型，即一个指向整数的引用。

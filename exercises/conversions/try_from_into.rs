@@ -25,11 +25,8 @@ enum IntoColorError {
     BadLen,
     // Integer conversion error
     IntConversion,
-} 
+}
 //enum定义了可能的错误类型，并实现了Debug和PartialEq trait，可能的错误类型：1是BadLen，是指转换数组长度失败；2是IntConversion，是指转换整型失败。
-
-
-
 
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
@@ -45,12 +42,16 @@ impl TryFrom<(i16, i16, i16)> for Color {
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
         // 实现TryFrom trait，使得Color类型能够从(i16, i16, i16)类型转换过来。
         let (r, g, b) = tuple;
-        if r < 0||r > 255 || g < 0||g > 255 || b < 0 ||b > 255 {
+        if r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255 {
             Err(IntoColorError::IntConversion)
         } else {
-            Ok(Color { red: r as u8, green: g as u8, blue: b as u8 })
+            Ok(Color {
+                red: r as u8,
+                green: g as u8,
+                blue: b as u8,
+            })
         }
-}
+    }
 }
 // 实现TryFrom trait，使得Color类型能够从(i16, i16, i16)类型转换过来。
 
@@ -60,12 +61,16 @@ impl TryFrom<[i16; 3]> for Color {
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
         // 实现TryFrom trait，使得Color类型能够从[i16; 3]类型转换过来。
         let [r, g, b] = arr;
-        if r < 0||r > 255 || g < 0||g > 255 || b < 0 ||b > 255 {
+        if r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255 {
             Err(IntoColorError::IntConversion)
         } else {
-            Ok(Color { red: r as u8, green: g as u8, blue: b as u8})
+            Ok(Color {
+                red: r as u8,
+                green: g as u8,
+                blue: b as u8,
+            })
         }
-}
+    }
 }
 
 // Slice implementation
@@ -75,19 +80,21 @@ impl TryFrom<&[i16]> for Color {
         if slice.len() != 3 {
             return Err(IntoColorError::BadLen);
         }
-        
-        let r = slice[0] ;
-        let g = slice[1] ;
-        let b = slice[2] ;
 
-        
-        if r < 0||r > 255 || g < 0||g > 255 || b < 0 ||b > 255 {
+        let r = slice[0];
+        let g = slice[1];
+        let b = slice[2];
+
+        if r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255 {
             Err(IntoColorError::IntConversion)
         } else {
-            Ok(Color { red: r as u8 , green: g as u8, blue: b as u8 })
+            Ok(Color {
+                red: r as u8,
+                green: g as u8,
+                blue: b as u8,
+            })
         }
-
-}
+    }
 }
 fn main() {
     // Use the `try_from` function

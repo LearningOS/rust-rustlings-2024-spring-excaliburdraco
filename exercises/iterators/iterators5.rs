@@ -11,8 +11,6 @@
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-
-
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -36,13 +34,14 @@ fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
     // todo!();
-    map.values().filter(|&&val| val == value).count()   //fileter是迭代器中的筛选器方法，返回一个迭代器，迭代器中包含所有符合条件的元素
+    map.values().filter(|&&val| val == value).count() //fileter是迭代器中的筛选器方法，返回一个迭代器，迭代器中包含所有符合条件的元素
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
     let mut count = 0;
     for map in collection {
-        for val in map.values() {   //这里用两个for循环，是因为map是一个切片，先在外出循环数组，然后数组中的每个元素都是一个hashmap
+        for val in map.values() {
+            //这里用两个for循环，是因为map是一个切片，先在外出循环数组，然后数组中的每个元素都是一个hashmap
             if val == &value {
                 count += 1;
             }
@@ -55,7 +54,10 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    collection.iter().map(|map| map.values().filter(|&&v| v == value).count()).sum()
+    collection
+        .iter()
+        .map(|map| map.values().filter(|&&v| v == value).count())
+        .sum()
     //先迭代切片中的每个元素，然后迭代每个元素中的值，最后用filter筛选出符合条件的值，最后用count计数
 }
 
@@ -65,7 +67,7 @@ mod tests {
 
     #[test]
     fn count_complete() {
-        let map = get_map();  
+        let map = get_map();
         assert_eq!(3, count_iterator(&map, Progress::Complete));
     }
 

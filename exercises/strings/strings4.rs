@@ -7,8 +7,6 @@
 //
 // No hints this time!
 
-
-
 fn string_slice(arg: &str) {
     println!("{}", arg);
 }
@@ -22,7 +20,7 @@ fn main() {
     string(String::from("hi"));
     string("rust is fun!".to_owned());
     string_slice("nice weather".into());
-    string(format!("Interpolation {}", "Station"));   //不理解，为什么返回的是一个string,不是"station"
+    string(format!("Interpolation {}", "Station")); //不理解，为什么返回的是一个string,不是"station"
     string_slice(&String::from("abc")[0..1]);
     string_slice("  hello there ".trim());
     string("Happy Monday!".to_string().replace("Mon", "Tues"));

@@ -7,7 +7,6 @@
 // Execute `rustlings hint modules2` or use the `hint` watch subcommand for a
 // hint.
 
-
 mod delicious_snacks {
     // TODO: Fix these use statements
     pub use self::fruits::PEAR as fruit;

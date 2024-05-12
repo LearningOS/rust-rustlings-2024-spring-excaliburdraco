@@ -7,15 +7,11 @@
 // Execute `rustlings hint as_ref_mut` or use the `hint` watch subcommand for a
 // hint.
 
-
-
 // Obtain the number of bytes (not characters) in the given argument.
 // TODO: Add the AsRef trait appropriately as a trait bound.
 // use std::io::Read;
-fn byte_counter<T:AsRef<str>>(arg: T) -> usize {
-  
+fn byte_counter<T: AsRef<str>>(arg: T) -> usize {
     arg.as_ref().as_bytes().len()
-
 }
 //AsRef<[u8]> 是一个trait bound，它表示类型 T 实现了 AsRef<[u8]> 方法。
 //AsRef<[u8]> 方法返回一个 &[u8] 类型的引用,bytes() 方法返回一个 Bytes 类型的引用。
@@ -23,7 +19,7 @@ fn byte_counter<T:AsRef<str>>(arg: T) -> usize {
 
 // Obtain the number of characters (not bytes) in the given argument.
 // TODO: Add the AsRef trait appropriately as a trait bound.
-fn char_counter<T:AsRef<str>>(arg: T) -> usize {
+fn char_counter<T: AsRef<str>>(arg: T) -> usize {
     arg.as_ref().chars().count()
 }
 

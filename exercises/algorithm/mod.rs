@@ -1,5 +1,5 @@
-mod algorithm10;
 mod algorithm1;
+mod algorithm10;
 mod algorithm2;
 mod algorithm3;
 mod algorithm4;

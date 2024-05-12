@@ -21,18 +21,17 @@
 //
 // Execute `rustlings hint arc1` or use the `hint` watch subcommand for a hint.
 
-
-
 #![forbid(unused_imports)] // Do not change this, (or the next) line.  // 禁止未使用的导入
-use std::sync::Arc;      // 导入 Arc 类型，用于共享所有权
-use std::thread;         // 导入 thread 模块，用于创建线程
+use std::sync::Arc; // 导入 Arc 类型，用于共享所有权
+use std::thread; // 导入 thread 模块，用于创建线程
 
 fn main() {
-    let numbers: Vec<_> = (0..100u32).collect();   // 创建一个从 0 到 99 的向量
+    let numbers: Vec<_> = (0..100u32).collect(); // 创建一个从 0 到 99 的向量
     let shared_numbers = Arc::new(numbers); // // 将向量包装成 Arc，以便共享所有权
-    let mut joinhandles = Vec::new();// 创建一个空的 Vector，用于存储线程句柄
+    let mut joinhandles = Vec::new(); // 创建一个空的 Vector，用于存储线程句柄
 
-    for offset in 0..8 {     // 遍历 0 到 7
+    for offset in 0..8 {
+        // 遍历 0 到 7
         let child_numbers = Arc::clone(&shared_numbers); // // 克隆 Arc，以便在子线程中使用
         joinhandles.push(thread::spawn(move || {
             let sum: u32 = child_numbers.iter().filter(|&&n| n % 8 == offset).sum();

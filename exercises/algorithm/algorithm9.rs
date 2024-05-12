@@ -1,11 +1,12 @@
+
 /*
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
-use std::cmp::Ord;
-use std::default::Default;
+
+// use std::cmp::Ord;
+// use std::default::Default;
 
 pub struct Heap<T>
 where
@@ -38,8 +39,44 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.push(value);
+        self.count += 1;
+        self.sift_up(self.count);
+    }
+    fn sift_up(&mut self, mut idx: usize) {
+        while idx > 1 {
+            let parent_idx = self.parent_idx(idx);
+            if (self.comparator)(&self.items[idx], &self.items[parent_idx]) {
+                self.items.swap(idx, parent_idx);
+                idx = parent_idx;
+            } else {
+                break;
+            }
+        }
     }
 
+    fn sift_down(&mut self, mut idx: usize) {
+        loop {
+            let left_idx = self.left_child_idx(idx);
+            let right_idx = self.right_child_idx(idx);
+            let mut largest = idx;
+
+            if left_idx <= self.count && (self.comparator)(&self.items[left_idx], &self.items[largest]) {
+                largest = left_idx;
+            }
+
+            if right_idx <= self.count && (self.comparator)(&self.items[right_idx], &self.items[largest]) {
+                largest = right_idx;
+            }
+
+            if largest != idx {
+                self.items.swap(idx, largest);
+                idx = largest;
+            } else {
+                break;
+            }
+        }
+    }
     fn parent_idx(&self, idx: usize) -> usize {
         idx / 2
     }
@@ -79,16 +116,24 @@ where
 
 impl<T> Iterator for Heap<T>
 where
-    T: Default,
+    T: Default + Ord,
 {
     type Item = T;
 
-    fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.count == 0 {
+            return None;
+        }
+        let result = self.items.swap_remove(1);
+        self.count -= 1;
+        if self.count > 0 {
+            let last_element = self.items.pop().unwrap_or_default();
+            self.items.insert(1, last_element);
+            self.sift_down(1);
+        }
+        Some(result)
     }
 }
-
 pub struct MinHeap;
 
 impl MinHeap {

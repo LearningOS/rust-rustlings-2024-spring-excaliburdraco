@@ -6,8 +6,6 @@
 // Execute `rustlings hint primitive_types2` or use the `hint` watch subcommand
 // for a hint.
 
-
-
 fn main() {
     // Characters (`char`)
 
@@ -22,7 +20,7 @@ fn main() {
         println!("Neither alphabetic nor numeric!");
     }
 
-    let your_character = '\u{1F60A}';    
+    let your_character = '\u{1F60A}';
     // Finish this line like the example! What's your favorite character?
     // Try a letter, try a number, try a special character, try a character
     // from a different language than your own, try an emoji!
@@ -31,6 +29,6 @@ fn main() {
     } else if your_character.is_numeric() {
         println!("Numerical!");
     } else {
-        println!("{} Neither alphabetic nor numeric!",your_character);
+        println!("{} Neither alphabetic nor numeric!", your_character);
     }
 }

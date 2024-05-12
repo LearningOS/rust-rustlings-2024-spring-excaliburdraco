@@ -5,8 +5,6 @@
 // Execute `rustlings hint structs1` or use the `hint` watch subcommand for a
 // hint.
 
-
-
 struct ColorClassicStruct {
     // TODO: Something goes here
     red: u8,
@@ -14,7 +12,7 @@ struct ColorClassicStruct {
     blue: u8,
 }
 
-struct ColorTupleStruct(u8,u8,u8);
+struct ColorTupleStruct(u8, u8, u8);
 
 #[derive(Debug)]
 struct UnitLikeStruct;

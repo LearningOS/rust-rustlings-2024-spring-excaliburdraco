@@ -3,22 +3,22 @@
 // Execute `rustlings hint threads3` or use the `hint` watch subcommand for a
 // hint.
 
-
 // use std::fs::try_exists;
 use std::sync::mpsc; // 消息传递通道，提供了多生者单消费者通道来实现线程间的通信
-use std::sync::Arc;// 原子引用计数，用于在多线程环境下共享数据
-use std::thread;// 线程库，提供创建和操作线程的功能
-use std::time::Duration;    // 用于指定线程的睡眠时间
+use std::sync::Arc; // 原子引用计数，用于在多线程环境下共享数据
 use std::sync::Mutex;
+use std::thread; // 线程库，提供创建和操作线程的功能
+use std::time::Duration; // 用于指定线程的睡眠时间
 
 struct Queue {
-    length: u32,  // 队列长度
-    first_half: Vec<u32>,// 队列的前半部分
-    second_half: Vec<u32>,// 队列的后半部分
+    length: u32,           // 队列长度
+    first_half: Vec<u32>,  // 队列的前半部分
+    second_half: Vec<u32>, // 队列的后半部分
 }
 
 impl Queue {
-    fn new() -> Self {   // 创建一个新的队列
+    fn new() -> Self {
+        // 创建一个新的队列
         Queue {
             length: 10,
             first_half: vec![1, 2, 3, 4, 5],
@@ -28,23 +28,26 @@ impl Queue {
 }
 
 // fn send_tx(q: Queue, tx: mpsc::Sender<u32>) -> () { // 发送消息的函数
-    /*这个函数将一个 `Queue` 实例和一个发送器 (`tx`) 作为参数，
-    它的作用是将队列中的元素发送到 channel 中。它创建了两个线程，
-    每个线程都将队列的一半元素发送到 channel 中。 
-    函数的返回值是 ()，表示没有返回值。
-    */
-    fn send_tx(q: Queue, tx: Arc<Mutex<mpsc::Sender<u32>>>)-> 
-    (thread::JoinHandle<()>, thread::JoinHandle<()>){  // 发送消息的函数
+/*这个函数将一个 `Queue` 实例和一个发送器 (`tx`) 作为参数，
+它的作用是将队列中的元素发送到 channel 中。它创建了两个线程，
+每个线程都将队列的一半元素发送到 channel 中。
+函数的返回值是 ()，表示没有返回值。
+*/
+fn send_tx(
+    q: Queue,
+    tx: Arc<Mutex<mpsc::Sender<u32>>>,
+) -> (thread::JoinHandle<()>, thread::JoinHandle<()>) {
+    // 发送消息的函数
     let first_half = q.first_half.clone(); // 创建一个 Arc<T> 实例，
     let second_half = q.second_half.clone(); // 创建一个 Arc<T> 实例，
-    // let qc = Arc::new(q);  
-     //Arc<Queue> 是可共享的，可以被多个线程同时访问和修改,
-    // let qc1 = Arc::clone(&qc); //Arc<Queue> 克隆是单独的引用计数
-    // let qc2 = Arc::clone(&qc);//Arc<Queue> 克隆是单独的引用计数
-    //Arc::new与Arc::clone的区别是，Arc::new会创建一个新的 Arc<T> 实例，
-    // Arc:clone会创建一个新的引用计数，
+                                             // let qc = Arc::new(q);
+                                             //Arc<Queue> 是可共享的，可以被多个线程同时访问和修改,
+                                             // let qc1 = Arc::clone(&qc); //Arc<Queue> 克隆是单独的引用计数
+                                             // let qc2 = Arc::clone(&qc);//Arc<Queue> 克隆是单独的引用计数
+                                             //Arc::new与Arc::clone的区别是，Arc::new会创建一个新的 Arc<T> 实例，
+                                             // Arc:clone会创建一个新的引用计数，
     let tx1 = Arc::clone(&tx); // 创建一个发送器 (`tx`) 的克隆，
-    let handle1=thread::spawn(move || {  
+    let handle1 = thread::spawn(move || {
         /*创建一个线程，将队列的前半部分发送到 channel 中。
         这个线程会遍历队列的前半部分，并将每个元素发送到 channel 中。
         这里使用了 Arc<Queue> 来共享队列，
@@ -64,8 +67,9 @@ impl Queue {
         }
     });
 
-    let tx2 =Arc::clone(&tx); // 创建一个发送器 (`tx`) 的克隆，
-    let handle2=thread::spawn(move || {  // 创建第二个线程
+    let tx2 = Arc::clone(&tx); // 创建一个发送器 (`tx`) 的克隆，
+    let handle2 = thread::spawn(move || {
+        // 创建第二个线程
         for val in second_half {
             println!("sending {:?}", val);
             // tx.send(*val).unwrap();
@@ -73,7 +77,7 @@ impl Queue {
             thread::sleep(Duration::from_secs(1));
         }
     });
-    (handle1, handle2)  // 返回两个线程的句柄
+    (handle1, handle2) // 返回两个线程的句柄
 }
 
 fn main() {
@@ -86,7 +90,7 @@ fn main() {
     let tx = Arc::new(Mutex::new(tx)); // 创建一个发送器 (`tx`) 的克隆，
     let queue = Queue::new();
     // 创建一个 Queue 实例，
-     
+
     let queue_length = queue.length;
     // 获取队列的长度
 
@@ -97,12 +101,13 @@ fn main() {
     // 调用 send_tx 函数，将队列和发送器作为参数传递给它。
     let mut total_received: u32 = 0;
     // 初始化一个变量来记录接收到的消息数量
-    for received in rx {  //遍历接收到的rx,
+    for received in rx {
+        //遍历接收到的rx,
         // 这里rx是一个无限循环，
         println!("Got: {}", received);
         total_received += 1;
     }
-    /*        
+    /*
     为什么而无需显式调用recv函数来接收消息？因为 Rust 中的 channel 是自动接收消息的。
 
     send_tx的返回值是 ()，为什么rx可以直接使用而不需要显式调用recv函数来接收消息？
@@ -131,5 +136,4 @@ fn main() {
 
     println!("total numbers received: {}", total_received);
     assert_eq!(total_received, queue_length)
-    
 }

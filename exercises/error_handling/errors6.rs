@@ -9,21 +9,20 @@
 // Execute `rustlings hint errors6` or use the `hint` watch subcommand for a
 // hint.
 
-
-
 use std::num::ParseIntError;
 
 // This is a custom error type that we will be using in `parse_pos_nonzero()`.
 #[derive(PartialEq, Debug)]
-enum ParsePosNonzeroError {  /*定义一个枚举类型,他中有两个成员，Creation和ParseInt，Creation的作用是将CreationError类型的值转换为ParsePosNonzeroError类型的值，
+enum ParsePosNonzeroError {
+    /*定义一个枚举类型,他中有两个成员，Creation和ParseInt，Creation的作用是将CreationError类型的值转换为ParsePosNonzeroError类型的值，
     ParseInt的作用是将ParseIntError类型的值转换为ParsePosNonzeroError类型的值 */
-    Creation(CreationError),//这个是原始数据转换的错误类型，如果是0，或者负数，返回错误。
-    ParseInt(ParseIntError),//这个是数据转换的错误类型，如果是转换失败，返回错误。
+    Creation(CreationError), //这个是原始数据转换的错误类型，如果是0，或者负数，返回错误。
+    ParseInt(ParseIntError), //这个是数据转换的错误类型，如果是转换失败，返回错误。
 }
 
 impl ParsePosNonzeroError {
     fn from_creation(err: CreationError) -> ParsePosNonzeroError {
-        ParsePosNonzeroError::Creation(err)   //返回的是一个ParsePosNonzeroError类型的值,方法的作用是将CreationError类型的值转换为ParsePosNonzeroError类型的值
+        ParsePosNonzeroError::Creation(err) //返回的是一个ParsePosNonzeroError类型的值,方法的作用是将CreationError类型的值转换为ParsePosNonzeroError类型的值
     }
     // TODO: add another error conversion function here.
     fn from_parseint(err: ParseIntError) -> ParsePosNonzeroError {
@@ -31,21 +30,23 @@ impl ParsePosNonzeroError {
     }
 }
 
-fn parse_pos_nonzero(s: &str) -> Result<PositiveNonzeroInteger, ParsePosNonzeroError> { //返回的是一个Result类型的值
+fn parse_pos_nonzero(s: &str) -> Result<PositiveNonzeroInteger, ParsePosNonzeroError> {
+    //返回的是一个Result类型的值
     // TODO: change this to return an appropriate error instead of panicking
     // when `parse()` returns an error.
-    // let x: i64 = s.parse().unwrap();  
+    // let x: i64 = s.parse().unwrap();
     /* unwrap()方法如果接收一个Result类型，会返回一个Result类型的值，如果Result类型是Ok，
     则返回Ok中的值，如果Result类型是Err，则返回Err中的值 。
     具体代码：let x: i64 = s.parse().unwrap()，也可以写成：let x = s.parse::<i64>.unwarp（）。意思是强制将s:&str类型转换为i64,如果转换成功，
     用unwarp解析ok()的值，如果转换失败，解析err()的值*/
 
-    let x: i64 = match s.parse(){  //采用match模式匹配，如果成功，返回Ok中的值，如果失败，返回Err中的值。
+    let x: i64 = match s.parse() {
+        //采用match模式匹配，如果成功，返回Ok中的值，如果失败，返回Err中的值。
         Ok(x) => x,
         Err(e) => return Err(ParsePosNonzeroError::from_parseint(e)),
     };
 
-    PositiveNonzeroInteger::new(x).map_err(ParsePosNonzeroError::from_creation)  //map_err可以接收一个函数，将一个值转换为另一个值，
+    PositiveNonzeroInteger::new(x).map_err(ParsePosNonzeroError::from_creation) //map_err可以接收一个函数，将一个值转换为另一个值，
 }
 //传值路线: s -> x -> PositiveNonzeroInteger::new(x) -> Result<PositiveNonzeroInteger, CreationError> -> Result<PositiveNonzeroInteger, ParsePosNonzeroError> ->
 

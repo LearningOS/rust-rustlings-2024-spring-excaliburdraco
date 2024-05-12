@@ -6,8 +6,6 @@
 // Execute `rustlings hint iterators2` or use the `hint` watch subcommand for a
 // hint.
 
-
-
 // Step 1.
 // Complete the `capitalize_first` function.
 // "hello" -> "Hello"
@@ -26,7 +24,6 @@ pub fn capitalize_first(input: &str) -> String {
 pub fn capitalize_words_vector(words: &[&str]) -> Vec<String> {
     // vec![]
     words.iter().map(|x| capitalize_first(x)).collect()
-
 }
 
 // Step 3.
